@@ -1,1 +1,30 @@
-
+#!/bin/sh
+# page 60 Beginning Linux Programming , expanded and corrected by me version of programm
+trap 'rm -f /tmp/my_tmp_file_$$' INT  #SIGINT is not correct to use. All signal names are to be without SIG...
+echo "creating file /tmp/my_tmp_file_$$"
+date > /tmp/my_tmp_file_$$
+echo "press interrupt (CTRL-C) to interrupt ....(and rm -f command will be executed!)"
+while [ -f /tmp/my_tmp_file_$$ ]  #as long as the user doesn't press Ctrl-C ,causing the trap to be caught and the rm -f ,do...
+  do
+    echo "File exists and it contains :"
+    cat /tmp/my_tmp_file_$$
+    sleep 2
+done
+echo "The file no longer exists, we deleted it"
+trap '-' INT  #This is mistaken in the book , as : trap INT. Warning : trap '' INT ignores the signal, nothing happens!
+echo "  Creating again some file /tmp/my_tmp_file_$$"
+echo "  Do not forget to remove them after the script finishes!"
+date > /tmp/my_tmp_file_$$
+echo "press interrupt (control-C) to interrupt ....(and no commands will be executed!)"
+while [ -f /tmp/my_tmp_file_$$ ] 
+  do
+    echo "  File exists again and it contains :"
+    cat /tmp/my_tmp_file_$$
+    sleep 3
+done
+echo we never get here
+exit 0
+#We can delete the created /tmp/my_tmp... files with either one of the following ways
+#rm /tmp/my_*
+#find /tmp -name my_* -exec rm {} \;
+#find /tmp -name my_* -delete
