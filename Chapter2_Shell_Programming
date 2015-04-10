@@ -11,7 +11,7 @@ while [ -f /tmp/my_tmp_file_$$ ]  #as long as the user doesn't press Ctrl-C ,cau
     sleep 2
 done
 echo "The file no longer exists, we deleted it"
-trap '-' INT  #This is mistaken in the book , as : trap INT. Warning : trap '' INT ignores the signal, nothing happens!
+trap '-' INT  #Corrected in the public Errata as: trap - INT   .Warning : trap '' INT ignores the signal, nothing happens!
 echo "  Creating again some file /tmp/my_tmp_file_$$"
 echo "  Do not forget to remove them after the script finishes!"
 date > /tmp/my_tmp_file_$$
