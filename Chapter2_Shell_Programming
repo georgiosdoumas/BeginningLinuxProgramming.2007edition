@@ -1,19 +1,23 @@
 #!/bin/sh
 # page 60 Beginning Linux Programming , expanded and corrected by me version of programm
 trap 'rm -f /tmp/my_tmp_file_$$' INT  #SIGINT is not correct to use. All signal names are to be without SIG...
+#trap 'rm -f /tmp/my_tmp_file_$$' 2  #that would be an equivalent way to look for INT signal
 echo "creating file /tmp/my_tmp_file_$$"
 date > /tmp/my_tmp_file_$$
 echo "press interrupt (CTRL-C) to interrupt ....(and rm -f command will be executed!)"
 while [ -f /tmp/my_tmp_file_$$ ]  #as long as the user doesn't press Ctrl-C ,causing the trap to be caught and the rm -f ,do...
   do
-    echo "File exists and it contains :"
+    echo " File exists and it contains :"
     cat /tmp/my_tmp_file_$$
     sleep 3
-done
-echo "The file no longer exists, we deleted it, as a reaction to trap"
-trap '-' INT  #Corrected in the public Errata as: trap - INT   .Warning : trap '' INT ignores the signal, nothing happens!
-echo "  Creating again some file /tmp/my_tmp_file_$$"
-echo "  Do not forget to remove them after the script finishes!"
+ done
+echo " The file no longer exists, we deleted it, as a reaction to catching the Ctrl+C "
+trap '' 2  #Corrected in the public Errata as: trap - INT.Warning : trap '' INT ignores the signal, nothing happens!
+# and the process will have to be : kill -9 PID#
+trap '' KILL  #but this can still not make the running script unstopable after sending it the signal :
+#kill -9 PID#
+echo "Creating again some file /tmp/my_tmp_file_$$"
+echo "Do not forget to remove them after the script finishes!"
 date > /tmp/my_tmp_file_$$
 echo "press interrupt (control-C) to interrupt ....(and no commands will be executed!)"
 echo "Remember to remove by hand the files in /tmp/my_tmp_fileXX "
@@ -23,10 +27,10 @@ while [ -f /tmp/my_tmp_file_$$ ]
     echo "  File exists again and it contains :"
     cat /tmp/my_tmp_file_$$
     sleep 4
-done
+ done
 echo "we never get here, so the next exit 0 is never reached."
 exit 0
 #We can delete the created /tmp/my_tmp... files with either one of the following ways
-#rm /tmp/my_*
-#find /tmp -name my_* -exec rm {} \;
-#find /tmp -name my_* -delete
+#rm /tmp/my_tmp_*
+#find /tmp -name my_tmp_* -exec rm {} \;
+#find /tmp -name my_tmp_* -delete
