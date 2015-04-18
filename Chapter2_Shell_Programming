@@ -8,7 +8,7 @@ while [ -f /tmp/my_tmp_file_$$ ]  #as long as the user doesn't press Ctrl-C ,cau
   do
     echo "File exists and it contains :"
     cat /tmp/my_tmp_file_$$
-    sleep 2
+    sleep 3
 done
 echo "The file no longer exists, we deleted it, as a reaction to trap"
 trap '-' INT  #Corrected in the public Errata as: trap - INT   .Warning : trap '' INT ignores the signal, nothing happens!
@@ -17,12 +17,12 @@ echo "  Do not forget to remove them after the script finishes!"
 date > /tmp/my_tmp_file_$$
 echo "press interrupt (control-C) to interrupt ....(and no commands will be executed!)"
 echo "Remember to remove by hand the files in /tmp/my_tmp_fileXX "
-echo "and also to check that the exit code of the script is not 0, check it with : echo $?"
+echo "and also to check that the exit code of the script is not 0, check it with : echo \$?"
 while [ -f /tmp/my_tmp_file_$$ ] 
   do
     echo "  File exists again and it contains :"
     cat /tmp/my_tmp_file_$$
-    sleep 3
+    sleep 4
 done
 echo "we never get here, so the next exit 0 is never reached."
 exit 0
