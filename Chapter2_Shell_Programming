@@ -49,3 +49,27 @@ So the solutions given are good only for matching lines that have words with 10 
 matching only lines that have words exactly 10 characters a solution would be 
 #$ grep -E [a-z]\{10\}[[:space:]]+  words2.txt   #I tested it and still matches words bigger than 10 characters
 #$ grep -E \([a-z]\{10\}\)[[:space:]]+  words2.txt   #I tested it and still matches words bigger than 10 characters
+
+
+#!/bin/sh
+# page 72 of Beginning Linux Programming 2007
+# putting the output (as corrected by the public errata) near the commands for ease of reference
+unset foo
+echo ${foo:-bar}  # gives : bar
+foo=fud
+echo ${foo:-bar}  # gives : fud
+foo=/usr/bin/X11/startx
+echo ${foo#*/}    # gives : usr/bin/X11/startx  (removes only first / , left to right )
+echo ${foo##*/}   # gives : startx    (removes everything up to last .../ , so it removes /usr/bin/X11/ ,left-to-right)
+bar=/usr/local/etc/local/networks
+echo ${bar%local*}  # gives : /usr/local/etc/  (works right-to-left , catches only local/networks and removes it
+echo ${bar%%local*} # gives : /usr/     (works right-to-left , catches whole  local/etc/local/networks and removes it
+echo ${bar%/local*}  # gives : /usr/local/etc  (works right-to-left , catches only /local/networks and removes it
+echo ${bar%%/local*}  # gives : /usr    (works right-to-left , catches whole  /local/etc/local/networks and removes it
+exit 0
+
+
+
+
+
+
