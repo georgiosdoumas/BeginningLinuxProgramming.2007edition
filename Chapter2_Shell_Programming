@@ -34,3 +34,18 @@ exit 0
 #rm /tmp/my_tmp_*
 #find /tmp -name my_tmp_* -exec rm {} \;
 #find /tmp -name my_tmp_* -delete
+
+
+# page 68 Beginning Linux Programming
+In example 4 for regular expressions , they say :
+  "Finally, use the extended grep mode to search for lowercase words that are exactly 10 characters
+long. Do this by specifying a range of characters to match a to z, and a repetition of 10 matches:"
+And in then give as a solution
+$ grep -E [a-z]\{10\} words2.txt
+In the errata they even correct it as :
+$ grep -E [A-Za-z]\{10\} words2.txt
+But there is a subtle case : if there are lines with words more than 10 characters , they will also match.
+So the solutions given are good only for matching lines that have words with 10 or more characters. For 
+matching only lines that have words exactly 10 characters a solution would be 
+#$ grep -E [a-z]\{10\}[[:space:]]+  words2.txt   #I tested it and still matches words bigger than 10 characters
+#$ grep -E \([a-z]\{10\}\)[[:space:]]+  words2.txt   #I tested it and still matches words bigger than 10 characters
