@@ -1,3 +1,4 @@
+/* A variation of programm connect2.c , of pages 341-342 */
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"   
@@ -31,3 +32,60 @@ Connection error 1045: Access denied for user 'rock'@'localhost' (using password
 Connection error 1045: Access denied for user 'rick'@'localhost' (using password: YES)
 Connection error 1049: Unknown database 'nonexistingdb'
 */
+
+-- create_children2.sql (a variation of page 339 )
+-- Create the table children of database practicedb as per page 344 data
+-- if you are in the directory where this sql program exists , connect to mysql and run so :
+-- mysql> use practicedb
+-- mysql> source create_children.sql 
+--
+DROP TABLE children;
+CREATE TABLE children (
+    childno int(11) AUTO_INCREMENT NOT NULL  PRIMARY KEY,
+    fname varchar(30),
+    age int(11)
+);
+--
+-- Populate the table 'children' , no need to assign childno values , since they are auto-increment
+-- insert the specific 11 rows 
+
+INSERT INTO children( fname,age) VALUES ('Jenny',21);
+INSERT INTO children( fname,age) VALUES ('Andrew',17);
+INSERT INTO children( fname,age) VALUES ('Gavin',9);
+INSERT INTO children( fname,age) VALUES ('Duncan',6);
+INSERT INTO children( fname,age) VALUES ('Emma',4);
+INSERT INTO children( fname,age) VALUES ('Alex',15);
+INSERT INTO children( fname,age) VALUES ('Adrian',9);
+INSERT INTO children( fname,age) VALUES ('Ann',3);
+INSERT INTO children( fname,age) VALUES ('Ann',4);
+INSERT INTO children( fname,age) VALUES ('Ann',3);
+INSERT INTO children( fname,age) VALUES ('Ann',4);
+-- end
+
+//After running the above sql script , you can run the update1.c (hints for update.c are in page 344-345)
+//Again the compile is done slike this in an ubuntu/mint system :
+//gcc -I/usr/include/mysql update1.c -L/usr/lib/mysql -lmysqlclient -o update1
+#include <stdlib.h>
+#include <stdio.h>
+#include "mysql.h"   
+int main(int argc, char *argv[]) 
+{
+    MYSQL my_connection;
+    int res;
+    mysql_init(&my_connection);
+    if(mysql_real_connect(&my_connection, "localhost", "rick", "secret","practicedb", 0, NULL, CLIENT_FOUND_ROWS) )  
+        { 
+            printf("Connection success\n"); 
+            res = mysql_query(&my_connection, "UPDATE children SET  AGE = 4 WHERE fname = 'Ann' ");
+            if (!res) { printf("Updated %lu rows\n",(unsigned long)mysql_affected_rows(&my_connection)); }
+            else { fprintf(stderr,"Insertion error %d: %s\n",mysql_errno(&my_connection),mysql_error(&my_connection)); }
+            mysql_close(&my_connection);
+        }
+      else 
+        {
+            fprintf(stderr,"Connection failed\n");
+            if (mysql_errno(&my_connection) )
+             {fprintf(stderr,"Connection error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection));}   
+         }
+     return EXIT_SUCCESS;
+}
