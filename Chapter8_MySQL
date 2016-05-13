@@ -140,15 +140,16 @@ int main(int argc, char *argv[])
 
 
 
-//select3.c is a variation of the book programm on pages 352-353 , where I follow the 
+//select3.c is a variation of the book program on pages 352-353 , where I follow the 
 //avoidance of usage of global [outside main] variables. So I need to do some modifications
 //on the declaration and definition and usage of function display_row 
 // page 352-353 
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
-void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow);
-int main() 
+//void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow);  //alternate declaration
+void display_row(MYSQL  some_connection , MYSQL_ROW dbrow);
+int main(void) 
 {
     MYSQL my_connection;
     MYSQL_RES *res_ptr;
@@ -169,7 +170,8 @@ int main()
                 while ((sqlrow = mysql_fetch_row(res_ptr))) 
                    { 
                     printf("Fetched data , one row at a time ...\n"); 
-                    display_row(&my_connection , sqlrow ); 
+                    //display_row(&my_connection , sqlrow ); //use this line for the alternate definition case
+                    display_row(my_connection , sqlrow );
                    }
                 if (mysql_errno(&my_connection)) 
                   { fprintf(stderr, "Retrive error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
@@ -186,11 +188,13 @@ int main()
      }
     return EXIT_SUCCESS;
 }
-void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow)
+//void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow)  //alternate definition
+void display_row(MYSQL some_connection , MYSQL_ROW dbrow)
 {
     unsigned int field_count;  /* number of columns */
     field_count = 0;
-    while ( field_count < mysql_field_count(some_connection_ptr) ) 
+    //while ( field_count < mysql_field_count(some_connection_ptr) )  //use this line for the alternate definition case
+    while ( field_count < mysql_field_count(&some_connection) ) 
      {
         printf("%s ", dbrow[field_count]);
         field_count++;
@@ -198,4 +202,4 @@ void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow)
     printf("\n");
 }
 // gcc -I/usr/include/mysql select3.c -L/usr/lib/mysql -lmysqlclient -o select3 
-// For the practicedb of page 344-345 , I get 4 rows returned , which is correct
+// For the practicedb of page 344-345 , I get 4 rows returned ,for child with name Ann,  which is correct
