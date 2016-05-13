@@ -42,7 +42,6 @@ int main(void)
      }
     return EXIT_SUCCESS;
 }
-
 void display_row()
 {
     unsigned int field_count;  /* number of columns */
