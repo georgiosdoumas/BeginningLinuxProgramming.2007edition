@@ -1,8 +1,125 @@
-// page 352-353 
+// page 352-353 of book Beginning Linux Programming , 4th edition 2007 
+//The book is using the program of page 350 as a base , and expands on it slightly
+//to reach the following , at page 352-353 : 
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
-//void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow);
+void display_row();
+MYSQL my_connection; // use of 2 global variables , so they are easily accessed from function display()  
+MYSQL_ROW sqlrow;
+int main(void) 
+{
+    MYSQL_RES *res_ptr;
+    int res;
+    mysql_init(&my_connection);
+    if (mysql_real_connect(&my_connection,"localhost","rick","secret","practicedb", 0, NULL, 0)) 
+    {
+        printf("Connection success\n");
+        res = mysql_query(&my_connection,"SELECT childno, fname, age FROM children WHERE fname = 'Ann' ");
+        if (res) { printf("SELECT error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
+        else
+         { 
+            res_ptr = mysql_use_result(&my_connection);
+            if (res_ptr) 
+             {
+                while ((sqlrow = mysql_fetch_row(res_ptr))) 
+                   { 
+                    printf("Fetched data , one row at a time ...\n"); 
+                    display_row();
+                   }
+                if (mysql_errno(&my_connection)) 
+                  { fprintf(stderr, "Retrive error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
+                mysql_free_result(res_ptr);
+             }
+         }
+        mysql_close(&my_connection);
+     } 
+    else 
+     {
+        fprintf(stderr, "Connection failed\n");
+        if (mysql_errno(&my_connection)) 
+         { fprintf(stderr,"Connection error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
+     }
+    return EXIT_SUCCESS;
+}
+
+void display_row()
+{
+    unsigned int field_count;  /* number of columns */
+    field_count = 0;
+    while ( field_count < mysql_field_count(&my_connection) ) 
+     {
+        printf("%s ", sqlrow[field_count]);
+        field_count++;
+     }
+    printf("\n");
+}
+// gcc -I/usr/include/mysql select3globvar.c -L/usr/lib/mysql -lmysqlclient -o select3globvar 
+
+
+// I implemented a variation of the above program , avoiding the local variables declaration 
+// and I modified the definition and declaration of display( ...) 
+#include <stdlib.h>
+#include <stdio.h>
+#include "mysql.h"
+void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow);
+int main(void) 
+{
+    MYSQL my_connection;
+    MYSQL_RES *res_ptr;
+    MYSQL_ROW sqlrow;
+    int res;
+    mysql_init(&my_connection);
+    if (mysql_real_connect(&my_connection,"localhost","rick","secret","practicedb", 0, NULL, 0)) 
+    {
+        printf("Connection success\n");
+        res = mysql_query(&my_connection,"SELECT childno, fname, age FROM children WHERE fname = 'Ann' ");
+        if (res) { printf("SELECT error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
+        else
+         { 
+            res_ptr = mysql_use_result(&my_connection);
+            if (res_ptr) 
+             {
+                while ((sqlrow = mysql_fetch_row(res_ptr))) 
+                   { 
+                    printf("Fetched data , one row at a time ...\n"); 
+                    display_row(&my_connection , sqlrow ); 
+                   }
+                if (mysql_errno(&my_connection)) 
+                  { fprintf(stderr, "Retrive error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
+                mysql_free_result(res_ptr);
+             }
+         }
+        mysql_close(&my_connection);
+     } 
+    else 
+     {
+        fprintf(stderr, "Connection failed\n");
+        if (mysql_errno(&my_connection)) 
+         { fprintf(stderr,"Connection error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
+     }
+    return EXIT_SUCCESS;
+}
+void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow)
+{
+    unsigned int field_count;  /* number of columns */
+    field_count = 0;
+    while ( field_count < mysql_field_count(some_connection_ptr) )
+     {
+        printf("%s ", dbrow[field_count]);
+        field_count++;
+     }
+    printf("\n");
+}
+// gcc -I/usr/include/mysql select3.c -L/usr/lib/mysql -lmysqlclient -o select3 
+
+
+
+// This is another implementation with alternate display(...) definition and declaration 
+// that does not uses pointers . Is it worse than the previous ?
+#include <stdlib.h>
+#include <stdio.h>
+#include "mysql.h"
 void display_row(MYSQL  some_connection , MYSQL_ROW dbrow);
 int main(void) 
 {
@@ -15,7 +132,6 @@ int main(void)
     {
         printf("Connection success\n");
         res = mysql_query(&my_connection,"SELECT childno, fname, age FROM children WHERE fname = 'Ann' ");
-        /* by typing mistakenly something from the above line , eg childrenn , we can get various SELECT error: */
         if (res) { printf("SELECT error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
         else
          { 
@@ -25,7 +141,6 @@ int main(void)
                 while ((sqlrow = mysql_fetch_row(res_ptr))) 
                    { 
                     printf("Fetched data , one row at a time ...\n"); 
-                    //display_row(&my_connection , sqlrow ); 
                     display_row(my_connection , sqlrow );
                    }
                 if (mysql_errno(&my_connection)) 
@@ -43,12 +158,10 @@ int main(void)
      }
     return EXIT_SUCCESS;
 }
-//void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow)
 void display_row(MYSQL some_connection , MYSQL_ROW dbrow)
 {
     unsigned int field_count;  /* number of columns */
     field_count = 0;
-    //while ( field_count < mysql_field_count(some_connection_ptr) )
     while ( field_count < mysql_field_count(&some_connection) ) 
      {
         printf("%s ", dbrow[field_count]);
@@ -57,4 +170,4 @@ void display_row(MYSQL some_connection , MYSQL_ROW dbrow)
     printf("\n");
 }
 // gcc -I/usr/include/mysql select3.c -L/usr/lib/mysql -lmysqlclient -o select3 
-// For the practicedb of page 344-345 , I get 4 rows returned , which is correct
+
