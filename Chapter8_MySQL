@@ -203,3 +203,8 @@ void display_row(MYSQL some_connection , MYSQL_ROW dbrow)
 }
 // gcc -I/usr/include/mysql select3.c -L/usr/lib/mysql -lmysqlclient -o select3 
 // For the practicedb of page 344-345 , I get 4 rows returned ,for child with name Ann,  which is correct
+
+
+
+
+// select4.c , again different from what the book has on pages 355-356
