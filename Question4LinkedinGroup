@@ -42,13 +42,13 @@ int main(void)
      }
     return EXIT_SUCCESS;
 }
-void display_row()
+void display_row()  //no need for parameters list
 {
     unsigned int field_count;  /* number of columns */
     field_count = 0;
-    while ( field_count < mysql_field_count(&my_connection) ) 
+    while ( field_count < mysql_field_count(&my_connection) ) //global var my_connection is visible in here 
      {
-        printf("%s ", sqlrow[field_count]);
+        printf("%s ", sqlrow[field_count]);  //global var sqlrow is visible in here 
         field_count++;
      }
     printf("\n");
@@ -57,7 +57,7 @@ void display_row()
 
 
 // I implemented a variation of the above program , avoiding the local variables declaration 
-// and I modified the definition and declaration of display( ...) 
+// so I had to modify the definition and declaration of display( ...) 
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
