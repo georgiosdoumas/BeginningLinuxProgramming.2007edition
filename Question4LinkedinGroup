@@ -1,6 +1,7 @@
 // page 352-353 of book Beginning Linux Programming , 4th edition 2007 
 //The book is using the program of page 350 as a base , and expands on it slightly
-//to reach the following , at page 352-353 : 
+//to reach the following , at page 352-353 :
+// VERSION 1 , according to book 
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
@@ -58,6 +59,7 @@ void display_row()  //no need for parameters list
 
 // I implemented a variation of the above program , avoiding the local variables declaration 
 // so I had to modify the definition and declaration of display( ...) 
+//VERSION 2 , my alternate version , passing a pointer and a variable to the function  
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
@@ -116,6 +118,7 @@ void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow)
 
 // This is another implementation with alternate display(...) definition and declaration 
 // that does not uses pointers . Is it worse than the previous ?
+// VERSION 3 
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
