@@ -1,6 +1,17 @@
 // page 352-353 of book Beginning Linux Programming , 4th edition 2007 
 //The book is using the program of page 350 as a base , and expands on it slightly
 //to reach the following , at page 352-353 :
+//Here are some definitions , taken from the book and not from official MySQL C API 
+//MYSQL *mysql_init(MYSQL *);  
+//MYSQL *mysql_real_connect(MYSQL *connection,const char *server_host,const char*sql_user_name,const char *sql_password,
+                            const char *db_name,unsigned int port_number,const char *unix_socket_name,unsigned int flags);  
+//void mysql_close(MYSQL *connection);  
+//MYSQL_ROW mysql_fetch_row(MYSQL_RES *result); 
+//unsigned int mysql_errno(MYSQL *connection);  
+//char *mysql_error(MYSQL *connection);  
+//MYSQL_RES *mysql_use_result(MYSQL *connection);  
+//unsigned int mysql_field_count(MYSQL *connection); 
+//int mysql_query(MYSQL *connection, const char *query); 
 // VERSION 1 , according to book 
 #include <stdlib.h>
 #include <stdio.h>
