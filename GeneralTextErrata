@@ -1,1 +1,5 @@
-
+Chapter 3 , page 94 
+Directories
+"(You can see the inode number for a file by using ln –i .)"
+should be replaced by 
+(You can see the inode number for a file by using ls –i .)
