@@ -1,3 +1,4 @@
+/* Beginning Linux Programming 4th ed , page 100-103 , there is no example in the book, so I tried something on my own  */
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
