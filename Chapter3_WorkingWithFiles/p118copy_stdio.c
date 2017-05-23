@@ -4,8 +4,9 @@
 #include <stdlib.h>
 /* Syntax reminder : 
 char *fgets(char *s, int size, FILE *stream);
-fgets() reads in at most size-1 characters from stream and stores them into the buffer pointed to by s.  Reading stops after  an  EOF  or  a
-newline.  If a newline is read, it is stored into the buffer.  A terminating null byte ('\0') is stored after the last character in the buffer.
+fgets() reads in at most size-1 characters from stream and stores them into the buffer pointed to by s.  
+Reading stops after  an  EOF  or  a newline.  If a newline is read, it is stored into the buffer. 
+A terminating null byte ('\0') is stored after the last character in the buffer.
 fgets() return s on success, and NULL on error or when end of file occurs while no characters have been read.
 */
 int main()
@@ -15,7 +16,8 @@ int main()
     FILE *instream, *outstream;
     instream = fopen("file.in","r");
     outstream = fopen("p118file.out","w");
-    while ( fgets(line, 121, instream) )  // while ( (line = fgets(line, 121, instream)) != NULL ) : produces a compiler error about pointer types
+    while ( fgets(line, 121, instream) )  
+    // while ( (line = fgets(line, 121, instream)) != NULL ) : produces a compiler error about pointer types
         fprintf(outstream, "%s", line);
     exit(0);
 }
