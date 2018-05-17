@@ -22,3 +22,5 @@ int main(int argc, char *argv[])
          }
      return EXIT_SUCCESS;
 }
+
+//gcc -I/usr/include/mysql page344update1.c -L/usr/lib/mysql -lmysqlclient -o update1
