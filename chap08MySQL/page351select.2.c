@@ -41,5 +41,5 @@ int main(int argc, char *argv[])
      }
     return EXIT_SUCCESS;
 }
-// gcc -I/usr/include/mysql select2.c -L/usr/lib/mysql -lmysqlclient -o select2 
+// gcc -I/usr/include/mysql page351select2.c -L/usr/lib/mysql -lmysqlclient -o select2 
 // For the practicedb of page 344-345 , I get 4 rows returned , which is correct
