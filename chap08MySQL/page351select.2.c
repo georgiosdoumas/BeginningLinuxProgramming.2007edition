@@ -1,8 +1,7 @@
-// select2.c is not fully presented in the book , so I write it here with some modifications ,
-// like to avoide the global declaration of MYSQL , MYSQL_RES , MYSQL_ROW , and to add 
-// the mysql_errno(&my_connection) in the outputs 
+// select2.c is not fully presented in the book , so I write it here with some modifications 
+// which are: to avoide the global declaration of MYSQL , MYSQL_RES , MYSQL_ROW , 
+// and to add  the mysql_errno(&my_connection) in the outputs 
 // I also used a match criteria of name-text , not of age , to be sure that it works well
-// page 351
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
