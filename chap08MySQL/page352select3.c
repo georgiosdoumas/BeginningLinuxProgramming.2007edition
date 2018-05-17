@@ -1,12 +1,11 @@
 //select3.c is a variation of the book program on pages 352-353 , where I follow the 
 //avoidance of usage of global [outside main] variables. So I need to do some modifications
-//on the declaration and definition and usage of function display_row 
-// page 352-353 
+//on the declaration and definition and usage of function display_row() 
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
 //void display_row(MYSQL * some_connection_ptr , MYSQL_ROW dbrow);  //alternate declaration
-void display_row(MYSQL  some_connection , MYSQL_ROW dbrow);
+void display_row(MYSQL  some_connection , MYSQL_ROW dbrow);   // but this aslo works
 int main(void) 
 {
     MYSQL my_connection;
@@ -26,11 +25,11 @@ int main(void)
             if (res_ptr) 
              {
                 while ((sqlrow = mysql_fetch_row(res_ptr))) 
-                   { 
+                  { 
                     printf("Fetched data , one row at a time ...\n"); 
                     //display_row(&my_connection , sqlrow ); //use this line for the alternate definition case
                     display_row(my_connection , sqlrow );
-                   }
+                  }
                 if (mysql_errno(&my_connection)) 
                   { fprintf(stderr, "Retrive error %d: %s\n",mysql_errno(&my_connection), mysql_error(&my_connection)); }
                 mysql_free_result(res_ptr);
@@ -60,4 +59,4 @@ void display_row(MYSQL some_connection , MYSQL_ROW dbrow)
      }
     printf("\n");
 }
-// gcc -I/usr/include/mysql select3.c -L/usr/lib/mysql -lmysqlclient -o select3 
+// gcc -I/usr/include/mysql page352select3.c -L/usr/lib/mysql -lmysqlclient -o select3 
