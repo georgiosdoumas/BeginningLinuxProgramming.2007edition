@@ -23,10 +23,10 @@ int main(int argc, char *argv[])
 }
 /* 
 I was able to compile it with the exact line that is given in the book on page 340 
-gcc -I/usr/include/mysql connect2.c -L/usr/lib/mysql -lmysqlclient -o connect2 
+gcc -I/usr/include/mysql page341connect2.c -L/usr/lib/mysql -lmysqlclient -o connect2 
 I did it on a linux-Mint system
 */
-/* Errors output that I get [ according to the if() line that I have uncommented< i get different execution error ]
+/* Errors output that I get [ according to the if() line that I have uncommented, I get different execution error ]
 Connection error 2005: Unknown MySQL server host 'localhst' (0)
 Connection error 1045: Access denied for user 'rock'@'localhost' (using password: YES)
 Connection error 1045: Access denied for user 'rick'@'localhost' (using password: YES)
