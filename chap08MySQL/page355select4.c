@@ -1,5 +1,5 @@
 // select4.c , again different from what the book has on pages 355-356
-// page 355-356 
+// Avoiding global variables 
 #include <stdlib.h>
 #include <stdio.h>
 #include "mysql.h"
@@ -8,9 +8,10 @@ void display_header(MYSQL_RES * some_res_ptr);
 void display_row(MYSQL  some_connection , MYSQL_ROW dbrow);
 int main(void) 
 {
-    MYSQL my_connection;
+    MYSQL my_connection;   // the 3 variables were defined global in the book code 
     MYSQL_RES *res_ptr;
     MYSQL_ROW sqlrow;
+    
     int res;
     int first_row = 1; /* Used to ensure we display the row header exactly once when data is successfully retrieved */
     mysql_init(&my_connection);
