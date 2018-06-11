@@ -1,3 +1,6 @@
+/* Not recommended to use the signal interface for catching signals. We include it here because
+you will find it in many older programs. A more cleanly defined and reliable interface  is sigaction , 
+and it better be used in all new programs. */
 #include <signal.h>  // for function: void (*signal(int sig, void (*func)(int)))(int);
 #include <stdio.h>
 #include <unistd.h>  // for sleep(n)
@@ -11,6 +14,7 @@ void ouchbehavior(int sig)
 
 int main()
 {
+  printf("  Initiating the signal function, to monitor the SIGINT signal.\n");
   (void) signal(SIGINT, ouchbehavior);
   while(1)
   {
