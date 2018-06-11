@@ -22,7 +22,7 @@ int main()
       message = "This is the parent";
       //n = 3;  // for this default value, parent would finish before child. Alternatively, ask user:
       printf("Enter number of repetitions for the message display:");
-      scanf("%d", &n);
+      scanf("%d", &n);  // entering fast a number <4 will result in parent finishing before child, and output of child will clutter with shell prompt
       break;
   }
   for(; n > 0; n--) {
