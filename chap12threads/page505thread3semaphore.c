@@ -35,7 +35,7 @@ int main()
   while(strncmp("end", work_area, 3) != 0) // reading happens in main thread, processing happens in created thread
   {
     fgets(work_area, WORK_SIZE, stdin);
-    sem_post(&binarySemaphore); // increments the semaphore
+    sem_post(&binarySemaphore);           // increments the semaphore
   }
   printf("\nWaiting for counting-thread to finish...\n");
   result = pthread_join(semThread, &threadResult);
@@ -51,7 +51,7 @@ int main()
 
 void *threadProcessingInput(void *arg)
 {
-  sem_wait(&binarySemaphore);  //waits for the semaphore to become nonzero and then it decreases it
+  sem_wait(&binarySemaphore);             //waits for the semaphore to become nonzero and then decreases it
   while(strncmp("end", work_area, 3) != 0)
   {
     printf("  You input %zd characters\n", strlen(work_area) -1);
