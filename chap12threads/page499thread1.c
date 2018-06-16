@@ -8,6 +8,9 @@ as a local variable in main, instead of global variable, and it works. */
 #include <pthread.h>
 #define MSG_SIZE 25
 // int pthread_create(pthread_t *thread, pthread_attr_t *attr, void*(*start_routine)(void *), void *arg);
+// int pthread_join(pthread_t th, void **thread_return);
+// void pthread_exit(void *retval);
+
 void* threadWork(void* input);
 
 int main(void)
@@ -15,21 +18,21 @@ int main(void)
   char message[MSG_SIZE] = "Thread will change me!";
   int result; // for storing return values of functions
   pthread_t simpleThread;
-  void* threadResult;
+  void* threadReturn;
   result = pthread_create(&simpleThread, NULL, threadWork, (void*)message);
   if(result != 0)
   {
     perror("Thread creation failed");
     exit(EXIT_FAILURE);
   }
-  printf("Thread was created,witing for it to finish...\n");
-  result = pthread_join(simpleThread, &threadResult);
+  printf("Thread was created,waiting for it to finish...\n");
+  result = pthread_join(simpleThread, &threadReturn);
   if(result != 0)
   {
     perror("Thread join failed");
     exit(EXIT_FAILURE);
   }
-  printf("Thread joined, it returned :%s \n", (char*)threadResult);
+  printf("Thread joined, it returned :%s \n", (char*)threadReturn);
   printf("Message is now: %s\n", message);
   exit(EXIT_SUCCESS);
 }
@@ -39,7 +42,7 @@ void* threadWork(void* input)
   printf("  Thread function is running. Argument passed was: %s \n", (char*)input);
   printf("  Enter the new message to edit the original message to:");
   fgets(input, MSG_SIZE, stdin);
-  pthread_exit("  Thank you for the CPU time");
+  pthread_exit("  Thank you for the CPU time"); // this string now becomes the threadReturn value
 }
 
 // gcc -Wall -O -D_REENTRANT -o page499thread1 page499thread1.c -lpthread
